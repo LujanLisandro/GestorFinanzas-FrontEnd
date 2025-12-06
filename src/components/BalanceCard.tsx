@@ -9,11 +9,11 @@ interface BalanceCardProps {
     showCurrencySwitch?: boolean;
     arsAmount?: number; // Balance en ARS
     usdAmount?: number; // Balance en USD
+    exchangeRate?: number; // Cotización del dólar
 }
 
-const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, arsAmount, usdAmount }: BalanceCardProps) => {
+const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, arsAmount, usdAmount, exchangeRate = 1000 }: BalanceCardProps) => {
     const [showInUSD, setShowInUSD] = useState(false);
-    const DOLLAR_RATE = 1000; // Precio del dólar (puedes cambiarlo)
 
     const formatCurrency = (value: number, inUSD: boolean = false) => {
         if (inUSD) {
@@ -33,11 +33,11 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
         if (type === 'total' && showCurrencySwitch) {
             if (showInUSD) {
                 // Mostrar en USD: USD + (ARS convertido a USD)
-                const arsInUsd = (arsAmount || 0) / DOLLAR_RATE;
+                const arsInUsd = (arsAmount || 0) / exchangeRate;
                 return (usdAmount || 0) + arsInUsd;
             } else {
                 // Mostrar en ARS: ARS + (USD convertido a ARS)
-                const usdInArs = (usdAmount || 0) * DOLLAR_RATE;
+                const usdInArs = (usdAmount || 0) * exchangeRate;
                 return (arsAmount || 0) + usdInArs;
             }
         }
@@ -119,10 +119,16 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
                             <span className="text-xs text-gray-500">este mes</span>
                         </div>
                     )}
-                    {showInUSD && type === 'total' && (
-                        <p className="text-xs text-gray-500 mt-2 font-medium">
-                            💱 Cotización: ${DOLLAR_RATE.toLocaleString('es-AR')}
-                        </p>
+                    {type === 'total' && showCurrencySwitch && (usdAmount || 0) > 0 && (
+                        <div className="mt-2 pt-2 border-t border-violet-200">
+                            <p className="text-xs text-gray-600 font-medium">
+                                {showInUSD ? (
+                                    <>💵 USD ${(usdAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} + ARS ${(arsAmount || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</>
+                                ) : (
+                                    <>💵 USD ${(usdAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} × ${exchangeRate.toLocaleString('es-AR')} = ${((usdAmount || 0) * exchangeRate).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</>
+                                )}
+                            </p>
+                        </div>
                     )}
                 </div>
                 <div className={`p-4 rounded-2xl ${getIconBgClasses()} ml-4 shadow-sm`}>

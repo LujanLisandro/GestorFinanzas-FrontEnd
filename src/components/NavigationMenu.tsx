@@ -2,13 +2,9 @@ import {
   X, 
   Home, 
   PieChart, 
-  TrendingUp, 
   CreditCard, 
-  Target, 
   Settings, 
-  BarChart3,
-  Calendar,
-  User
+  Calendar
 } from 'lucide-react';
 
 interface NavigationMenuProps {
@@ -36,13 +32,6 @@ const NavigationMenu = ({ isOpen, onClose, activeSection, onSectionChange }: Nav
             color: 'text-primary-600'
         },
         {
-            id: 'analytics',
-            title: 'Análisis Avanzado',
-            icon: <BarChart3 className="h-5 w-5" />,
-            description: 'Gráficos detallados y tendencias',
-            color: 'text-secondary-600'
-        },
-        {
             id: 'transactions',
             title: 'Transacciones',
             icon: <CreditCard className="h-5 w-5" />,
@@ -57,32 +46,11 @@ const NavigationMenu = ({ isOpen, onClose, activeSection, onSectionChange }: Nav
             color: 'text-primary-700'
         },
         {
-            id: 'goals',
-            title: 'Metas Financieras',
-            icon: <Target className="h-5 w-5" />,
-            description: 'Establece y sigue tus objetivos',
-            color: 'text-secondary-700'
-        },
-        {
-            id: 'investments',
-            title: 'Inversiones',
-            icon: <TrendingUp className="h-5 w-5" />,
-            description: 'Seguimiento de inversiones',
-            color: 'text-accent-700'
-        },
-        {
             id: 'calendar',
             title: 'Calendario Financiero',
             icon: <Calendar className="h-5 w-5" />,
             description: 'Vista mensual de ingresos y gastos',
             color: 'text-primary-500'
-        },
-        {
-            id: 'profile',
-            title: 'Perfil y Cuentas',
-            icon: <User className="h-5 w-5" />,
-            description: 'Gestión de perfil y cuentas bancarias',
-            color: 'text-accent-500'
         },
         {
             id: 'settings',
@@ -94,8 +62,14 @@ const NavigationMenu = ({ isOpen, onClose, activeSection, onSectionChange }: Nav
     ];
 
     const handleSectionClick = (sectionId: string) => {
-        onSectionChange(sectionId);
-        onClose();
+        if (sectionId === 'settings') {
+            // Para configuración, cambiar la sección para mostrar las opciones
+            onSectionChange(sectionId);
+            onClose();
+        } else {
+            onSectionChange(sectionId);
+            onClose();
+        }
     };
 
     return (

@@ -6,10 +6,11 @@ import CurrencyBalanceCard from '../components/CurrencyBalanceCard';
 import FinancialCharts from '../components/FinancialCharts';
 import NavigationMenu from '../components/NavigationMenu';
 import AddButtonMenu from '../components/AddButtonMenu';
-import AnalyticsSection from '../components/sections/AnalyticsSection';
+import DolarConfigModal from '../components/DolarConfigModal';
 import TransactionsSection from '../components/sections/TransactionsSection';
 import CategoriesSection from '../components/sections/CategoriesSection';
 import movementService from '../services/movementService';
+import dolarService from '../services/dolarService';
 import type { Balance, Transaction } from '../types';
 
 const Dashboard = () => {
@@ -26,6 +27,21 @@ const Dashboard = () => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [exchangeRate, setExchangeRate] = useState<number>(1000);
+    const [isDolarConfigOpen, setIsDolarConfigOpen] = useState(false);
+
+    useEffect(() => {
+        // Cargar cotización del dólar al iniciar
+        dolarService.getExchangeRate()
+            .then(rate => {
+                setExchangeRate(rate);
+            })
+            .catch(error => {
+                console.error('Error al cargar cotización del dólar:', error);
+                // Usar un valor por defecto si falla
+                setExchangeRate(1000);
+            });
+    }, []);
 
     const handleRefreshBalance = async () => {
         setIsRefreshing(true);
@@ -43,6 +59,16 @@ const Dashboard = () => {
         await refreshBalance();
         // Incrementar trigger para actualizar TransactionsSection
         setRefreshTrigger(prev => prev + 1);
+    };
+
+    const handleDolarConfigChange = async () => {
+        // Recargar la cotización del dólar después de cambiar la configuración
+        try {
+            const rate = await dolarService.getExchangeRate();
+            setExchangeRate(rate);
+        } catch (error) {
+            console.error('Error al actualizar cotización:', error);
+        }
     };
 
     const loadFinancialData = async () => {
@@ -127,40 +153,60 @@ const Dashboard = () => {
     // Función para renderizar contenido según la sección activa
     const renderSectionContent = () => {
         switch (activeSection) {
-            case 'analytics':
-                return <AnalyticsSection />;
             case 'transactions':
                 return <TransactionsSection key={refreshTrigger} />;
             case 'categories':
                 return <CategoriesSection />;
-            case 'goals':
-                return (
-                    <div className="text-center py-20">
-                        <p className="text-gray-500 text-lg">Metas Financieras - Próximamente</p>
-                    </div>
-                );
-            case 'investments':
-                return (
-                    <div className="text-center py-20">
-                        <p className="text-gray-500 text-lg">Inversiones - Próximamente</p>
-                    </div>
-                );
             case 'calendar':
                 return (
                     <div className="text-center py-20">
                         <p className="text-gray-500 text-lg">Calendario Financiero - Próximamente</p>
                     </div>
                 );
-            case 'profile':
-                return (
-                    <div className="text-center py-20">
-                        <p className="text-gray-500 text-lg">Perfil y Cuentas - Próximamente</p>
-                    </div>
-                );
             case 'settings':
                 return (
-                    <div className="text-center py-20">
-                        <p className="text-gray-500 text-lg">Configuración - Próximamente</p>
+                    <div className="space-y-6">
+                        <div className="mb-6">
+                            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-2">
+                                Configuración
+                            </h2>
+                            <p className="text-gray-600">Ajusta las preferencias de tu aplicación</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* Configuración del Dólar */}
+                            <button
+                                onClick={() => setIsDolarConfigOpen(true)}
+                                className="w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 text-left hover:bg-gray-50 border-2 border-transparent hover:shadow-sm bg-white shadow-lg"
+                            >
+                                <div className="p-3 rounded-lg bg-green-100 text-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                                        <line x1="12" x2="12" y1="2" y2="22"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-semibold text-gray-900">Configuración del Dólar</h3>
+                                    <p className="text-sm text-gray-500 truncate">Ajusta la cotización del dólar para conversiones</p>
+                                </div>
+                            </button>
+
+                            {/* Otras configuraciones (placeholder) */}
+                            <button
+                                className="w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 text-left hover:bg-gray-50 border-2 border-transparent hover:shadow-sm bg-white shadow-lg"
+                            >
+                                <div className="p-3 rounded-lg bg-gray-100 text-secondary-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                                        <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-semibold text-gray-900">Configuración</h3>
+                                    <p className="text-sm text-gray-500 truncate">Ajustes generales de la aplicación</p>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 );
             default: // dashboard
@@ -198,6 +244,7 @@ const Dashboard = () => {
                                 showCurrencySwitch={true}
                                 arsAmount={userBalance?.ars || 0}
                                 usdAmount={userBalance?.dolares || 0}
+                                exchangeRate={exchangeRate}
                             />
                             <BalanceCard
                                 title="Ingresos"
@@ -220,6 +267,7 @@ const Dashboard = () => {
                             <CurrencyBalanceCard
                                 currency="USD"
                                 amount={userBalance?.dolares || 0}
+                                exchangeRate={exchangeRate}
                                 onRefresh={handleRefreshBalance}
                                 isRefreshing={isRefreshing}
                             />
@@ -229,7 +277,7 @@ const Dashboard = () => {
                         <div className="bg-white rounded-2xl shadow-lg border border-primary-100 overflow-hidden">
                             <div className="bg-gradient-to-r from-primary-50 via-accent-50 to-secondary-50 px-6 py-4 border-b border-primary-200">
                                 <h3 className="text-xl font-bold bg-gradient-to-r from-primary-700 to-accent-700 bg-clip-text text-transparent">
-                                    📋 Transacciones Recientes
+                                    Transacciones Recientes
                                 </h3>
                             </div>
                             <div className="p-6">
@@ -291,6 +339,17 @@ const Dashboard = () => {
 
             {/* Botón flotante para acciones rápidas */}
             <AddButtonMenu onMovementCreated={handleMovementCreated} />
+
+            {/* Modal de Configuración del Dólar */}
+            {isDolarConfigOpen && (
+                <DolarConfigModal 
+                    isOpen={isDolarConfigOpen}
+                    onClose={() => {
+                        setIsDolarConfigOpen(false);
+                        handleDolarConfigChange();
+                    }}
+                />
+            )}
         </div>
     );
 };

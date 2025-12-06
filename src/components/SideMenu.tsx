@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { X, Plus, TrendingUp, TrendingDown, Settings, Download, Filter } from 'lucide-react';
+import { X, Plus, TrendingUp, TrendingDown, Settings, Download, Filter, DollarSign } from 'lucide-react';
 
 interface SideMenuProps {
     isOpen: boolean;
     onClose: () => void;
+    onOpenDolarConfig?: () => void;
 }
 
-const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
+const SideMenu = ({ isOpen, onClose, onOpenDolarConfig }: SideMenuProps) => {
     const [activeSection, setActiveSection] = useState<string>('');
 
     const menuOptions = [
@@ -29,6 +30,12 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
             description: 'Registra un nuevo gasto'
         },
         {
+            id: 'dolar-config',
+            title: 'Configuración del Dólar',
+            icon: <DollarSign className="h-5 w-5" />,
+            description: 'Ajusta la cotización del dólar'
+        },
+        {
             id: 'filters',
             title: 'Filtros',
             icon: <Filter className="h-5 w-5" />,
@@ -44,12 +51,17 @@ const SideMenu = ({ isOpen, onClose }: SideMenuProps) => {
             id: 'settings',
             title: 'Configuración',
             icon: <Settings className="h-5 w-5" />,
-            description: 'Ajustes de la aplicación'
+            description: 'Ajustes generales de la aplicación'
         }
     ];
 
     const handleOptionClick = (optionId: string) => {
-        setActiveSection(activeSection === optionId ? '' : optionId);
+        if (optionId === 'dolar-config' && onOpenDolarConfig) {
+            onOpenDolarConfig();
+            onClose();
+        } else {
+            setActiveSection(activeSection === optionId ? '' : optionId);
+        }
     };
 
     return (
