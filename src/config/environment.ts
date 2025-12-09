@@ -14,7 +14,7 @@ export const ENV_CONFIG = {
   API_PROTOCOL: import.meta.env.VITE_API_PROTOCOL || 'http',
   
   // Configuraciones de la aplicación
-  APP_NAME: 'Gestor de Finanzas',
+  APP_NAME: 'FinanPro',
   APP_VERSION: '1.0.0',
   
   // Configuraciones de localStorage

@@ -33,53 +33,53 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-blue-50 to-accent-50 flex items-center justify-center p-4">
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center">
-                    <div className="mx-auto h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center">
-                        <LogIn className="h-6 w-6 text-white" />
+                    <div className="mx-auto h-20 w-20 bg-gradient-to-br from-primary-600 via-primary-700 to-accent-700 rounded-2xl flex items-center justify-center shadow-2xl border-4 border-white/50 transform hover:scale-110 transition-transform duration-300">
+                        <LogIn className="h-10 w-10 text-white drop-shadow-lg" />
                     </div>
-                    <h2 className="mt-6 text-3xl font-bold text-gray-900">
-                        Gestor de Finanzas
+                    <h2 className="mt-8 text-5xl font-black bg-gradient-to-r from-primary-600 via-accent-600 to-primary-700 bg-clip-text text-transparent tracking-tight drop-shadow-sm">
+                        FinanPro
                     </h2>
-                    <p className="mt-2 text-sm text-gray-600">
+                    <p className="mt-3 text-base text-gray-600 font-medium">
                         Inicia sesión en tu cuenta
                     </p>
                 </div>
 
-                <form className="mt-8 space-y-6 bg-white p-8 rounded-xl shadow-lg" onSubmit={handleSubmit}>
-                    <div className="space-y-4">
+                <form className="mt-10 space-y-6 bg-white p-10 rounded-2xl shadow-2xl border-2 border-gray-100" onSubmit={handleSubmit}>
+                    <div className="space-y-5">
                         <div>
-                            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="username" className="block text-sm font-bold text-gray-700 mb-2">
                                 Usuario
                             </label>
                             <div className="relative">
-                                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                                <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                                 <input
                                     id="username"
                                     type="text"
                                     required
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    className="pl-12 w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 font-medium hover:border-gray-300"
                                     placeholder="Ingresa tu usuario"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-2">
                                 Contraseña
                             </label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                                 <input
                                     id="password"
                                     type="password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    className="pl-12 w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 font-medium hover:border-gray-300"
                                     placeholder="Ingresa tu contraseña"
                                 />
                             </div>
@@ -87,7 +87,7 @@ const Login = () => {
                     </div>
 
                     {error && (
-                        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+                        <div className="bg-red-50 border-2 border-red-200 text-red-600 px-5 py-4 rounded-xl text-sm font-semibold shadow-md">
                             {error}
                         </div>
                     )}
@@ -95,26 +95,21 @@ const Login = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex justify-center py-4 px-4 border-2 border-transparent rounded-xl shadow-lg text-base font-bold text-white bg-gradient-to-r from-primary-600 via-primary-700 to-accent-700 hover:from-primary-700 hover:via-primary-800 hover:to-accent-800 focus:outline-none focus:ring-4 focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl"
                     >
                         {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                     </button>
 
                     <div className="mt-6 text-center">
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 font-medium">
                             ¿No tienes una cuenta?{' '}
                             <Link
                                 to="/register"
-                                className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200"
+                                className="font-bold text-primary-600 hover:text-accent-600 transition-colors duration-200"
                             >
                                 Regístrate aquí
                             </Link>
                         </p>
-                    </div>
-
-                    <div className="text-center text-sm text-gray-500 mt-4">
-                        <p>Usuario de prueba: <strong>admin</strong></p>
-                        <p>Contraseña: <strong>password</strong></p>
                     </div>
                 </form>
             </div>

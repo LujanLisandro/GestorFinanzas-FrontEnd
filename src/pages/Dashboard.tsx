@@ -166,11 +166,11 @@ const Dashboard = () => {
             case 'settings':
                 return (
                     <div className="space-y-6">
-                        <div className="mb-6">
-                            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-2">
+                        <div className="mb-8">
+                            <h2 className="text-4xl font-black bg-gradient-to-r from-primary-600 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-3 tracking-tight drop-shadow-sm">
                                 Configuración
                             </h2>
-                            <p className="text-gray-600">Ajusta las preferencias de tu aplicación</p>
+                            <p className="text-gray-600 font-medium">Ajusta las preferencias de tu aplicación</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -213,12 +213,13 @@ const Dashboard = () => {
                 return (
                     <div className="space-y-6">
                         {/* Título */}
-                        <div className="mb-6">
-                            <h2 className="text-3xl font-bold bg-gradient-to-r from-primary-600 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-2">
-                                Dashboard Financiero
+                        <div className="mb-8">
+                            <h2 className="text-5xl font-black bg-gradient-to-r from-primary-600 via-accent-600 to-primary-700 bg-clip-text text-transparent mb-3 tracking-tight drop-shadow-sm">
+                                FinanPro
                             </h2>
-                            <p className="text-gray-600 text-sm">
-                                Resumen de tu situación financiera actual
+                            <p className="text-gray-600 text-base font-medium flex items-center gap-2">
+                                <span className="inline-block w-1.5 h-1.5 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full animate-pulse"></span>
+                                Tu asistente inteligente de finanzas personales
                             </p>
                         </div>
 
@@ -274,15 +275,19 @@ const Dashboard = () => {
                         </div>
 
                         {/* Transacciones Recientes */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-primary-100 overflow-hidden">
-                            <div className="bg-gradient-to-r from-primary-50 via-accent-50 to-secondary-50 px-6 py-4 border-b border-primary-200">
-                                <h3 className="text-xl font-bold bg-gradient-to-r from-primary-700 to-accent-700 bg-clip-text text-transparent">
+                        <div className="bg-white rounded-2xl shadow-xl border border-primary-100 overflow-hidden">
+                            <div className="bg-gradient-to-r from-primary-50 via-accent-50 to-secondary-50 px-6 py-5 border-b border-primary-200">
+                                <h3 className="text-2xl font-black bg-gradient-to-r from-primary-700 to-accent-700 bg-clip-text text-transparent flex items-center gap-2">
+                                    <span className="inline-block w-2 h-2 bg-gradient-to-r from-primary-600 to-accent-600 rounded-full animate-pulse"></span>
                                     Transacciones Recientes
                                 </h3>
                             </div>
                             <div className="p-6">
                                 <div className="space-y-3">
-                                    {balance.transactions.slice(0, 5).map(transaction => (
+                                    {balance.transactions
+                                        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                                        .slice(0, 5)
+                                        .map(transaction => (
                                         <div key={transaction.id} className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100">
                                             <div>
                                                 <p className="font-semibold text-gray-900">

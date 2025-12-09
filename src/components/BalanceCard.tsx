@@ -47,11 +47,11 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
     const getIcon = () => {
         switch (type) {
             case 'income':
-                return <TrendingUp className="h-6 w-6 text-green-600" />;
+                return <TrendingUp className="h-7 w-7 text-green-600 drop-shadow-sm" />;
             case 'expense':
-                return <TrendingDown className="h-6 w-6 text-red-600" />;
+                return <TrendingDown className="h-7 w-7 text-red-600 drop-shadow-sm" />;
             default:
-                return <DollarSign className="h-6 w-6 text-indigo-600" />;
+                return <DollarSign className="h-7 w-7 text-indigo-600 drop-shadow-sm" />;
         }
     };
 
@@ -78,18 +78,18 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
     };
 
     return (
-        <div className={`p-6 rounded-2xl shadow-lg border-2 ${getColorClasses()} hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}>
+        <div className={`p-6 rounded-2xl shadow-xl border-2 ${getColorClasses()} hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02]`}>
             <div className="flex items-center justify-between">
                 <div className="flex-1">
                     <div className="flex items-center justify-between mb-3">
-                        <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">{title}</p>
+                        <p className="text-sm font-bold text-gray-700 uppercase tracking-wider">{title}</p>
                         {showCurrencySwitch && type === 'total' && (
-                            <div className="flex items-center space-x-1 bg-white/80 backdrop-blur-sm rounded-full p-1 shadow-sm">
+                            <div className="flex items-center space-x-1 bg-white/90 backdrop-blur-sm rounded-full p-1 shadow-md border border-violet-200/50">
                                 <button
                                     onClick={() => setShowInUSD(false)}
                                     className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
                                         !showInUSD 
-                                            ? 'bg-violet-600 text-white shadow-md' 
+                                            ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-lg scale-105' 
                                             : 'text-gray-500 hover:text-violet-600 hover:bg-violet-50'
                                     }`}
                                 >
@@ -99,7 +99,7 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
                                     onClick={() => setShowInUSD(true)}
                                     className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
                                         showInUSD 
-                                            ? 'bg-green-600 text-white shadow-md' 
+                                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg scale-105' 
                                             : 'text-gray-500 hover:text-green-600 hover:bg-green-50'
                                     }`}
                                 >
@@ -108,20 +108,20 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
                             </div>
                         )}
                     </div>
-                    <p className={`text-3xl font-bold ${getColorClasses().split(' ')[0]} mb-2`}>
+                    <p className={`text-3xl font-black ${getColorClasses().split(' ')[0]} mb-2 drop-shadow-sm`}>
                         {formatCurrency(getDisplayAmount(), showInUSD && type === 'total')}
                     </p>
                     {change && (
                         <div className="flex items-center space-x-1">
-                            <span className={`text-sm font-medium ${change > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                            <span className={`text-sm font-bold ${change > 0 ? 'text-emerald-600' : 'text-rose-600'} drop-shadow-sm`}>
                                 {change > 0 ? '↗' : '↘'} {Math.abs(change).toFixed(1)}%
                             </span>
-                            <span className="text-xs text-gray-500">este mes</span>
+                            <span className="text-xs text-gray-500 font-medium">este mes</span>
                         </div>
                     )}
                     {type === 'total' && showCurrencySwitch && (usdAmount || 0) > 0 && (
-                        <div className="mt-2 pt-2 border-t border-violet-200">
-                            <p className="text-xs text-gray-600 font-medium">
+                        <div className="mt-3 pt-3 border-t-2 border-violet-200/70">
+                            <p className="text-xs text-gray-600 font-semibold">
                                 {showInUSD ? (
                                     <>💵 USD ${(usdAmount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} + ARS ${(arsAmount || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</>
                                 ) : (
@@ -131,7 +131,7 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
                         </div>
                     )}
                 </div>
-                <div className={`p-4 rounded-2xl ${getIconBgClasses()} ml-4 shadow-sm`}>
+                <div className={`p-4 rounded-2xl ${getIconBgClasses()} ml-4 shadow-lg border-2 border-white/50`}>
                     {getIcon()}
                 </div>
             </div>

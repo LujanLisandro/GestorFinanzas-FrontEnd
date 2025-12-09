@@ -280,35 +280,37 @@ const AddButtonMenu = ({ className = '', onMovementCreated }: AddButtonMenuProps
             <div className={`fixed bottom-6 right-6 z-50 ${className}`}>
                 {/* Panel desplegable */}
                 <div
-                    className={`absolute bottom-16 right-0 w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 transform transition-all duration-300 ease-in-out ${
+                    className={`absolute bottom-20 right-0 w-96 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 transform transition-all duration-300 ease-in-out ${
                         isOpen
                             ? 'opacity-100 translate-y-0 scale-100'
                             : 'opacity-0 translate-y-4 scale-95 pointer-events-none'
                     }`}
                 >
                     {/* Header del panel */}
-                    <div className="p-6 border-b border-gray-200">
+                    <div className="p-6 border-b-2 border-gray-200 bg-gradient-to-r from-primary-50 to-accent-50">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Acciones Rápidas</h3>
-                                <p className="text-sm text-gray-500">Agrega datos o configura filtros</p>
+                                <h3 className="text-xl font-black text-gray-900">Acciones Rápidas</h3>
+                                <p className="text-sm text-gray-600 font-medium">Agrega datos o configura filtros</p>
                             </div>
                             <button
                                 onClick={toggleMenu}
-                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                className="p-2.5 hover:bg-white hover:bg-opacity-50 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95"
                             >
-                                <X className="h-4 w-4 text-gray-500" />
+                                <X className="h-5 w-5 text-gray-600" />
                             </button>
                         </div>
                     </div>
 
                     {/* Contenido del panel */}
-                    <div className="p-4 max-h-96 overflow-y-auto">
+                    <div className="p-5 max-h-96 overflow-y-auto">
                         {/* Sección de Ingresos */}
                         <div className="mb-6">
-                            <div className="flex items-center space-x-2 mb-3">
-                                <TrendingUp className="h-5 w-5 text-green-600" />
-                                <h3 className="font-semibold text-gray-900">Ingresos</h3>
+                            <div className="flex items-center space-x-3 mb-4">
+                                <div className="p-2 bg-green-100 rounded-xl shadow-sm">
+                                    <TrendingUp className="h-6 w-6 text-green-600 drop-shadow-sm" />
+                                </div>
+                                <h3 className="font-black text-gray-900 text-base">Ingresos</h3>
                             </div>
                             <div className="space-y-2">
                                 {incomeActions.map((action) => (
@@ -342,13 +344,15 @@ const AddButtonMenu = ({ className = '', onMovementCreated }: AddButtonMenuProps
                         </div>
 
                         {/* Divisor */}
-                        <div className="border-t border-gray-200 mb-6"></div>
+                        <div className="border-t-2 border-gray-200 mb-6"></div>
 
                         {/* Sección de Egresos */}
                         <div className="mb-6">
-                            <div className="flex items-center space-x-2 mb-3">
-                                <TrendingDown className="h-5 w-5 text-red-600" />
-                                <h3 className="font-semibold text-gray-900">Egresos</h3>
+                            <div className="flex items-center space-x-3 mb-4">
+                                <div className="p-2 bg-red-100 rounded-xl shadow-sm">
+                                    <TrendingDown className="h-6 w-6 text-red-600 drop-shadow-sm" />
+                                </div>
+                                <h3 className="font-black text-gray-900 text-base">Egresos</h3>
                             </div>
                             <div className="space-y-2">
                                 {expenseActions.map((action) => (
@@ -386,11 +390,11 @@ const AddButtonMenu = ({ className = '', onMovementCreated }: AddButtonMenuProps
                 {/* Botón flotante principal */}
                 <button
                     onClick={toggleMenu}
-                    className={`w-14 h-14 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full shadow-lg hover:shadow-xl transform transition-all duration-300 ease-in-out flex items-center justify-center ${
-                        isOpen ? 'rotate-45 scale-110' : 'hover:scale-110'
+                    className={`w-16 h-16 bg-gradient-to-r from-primary-600 via-primary-700 to-accent-700 text-white rounded-2xl shadow-2xl hover:shadow-3xl transform transition-all duration-300 ease-in-out flex items-center justify-center border-4 border-white/50 ${
+                        isOpen ? 'rotate-45 scale-110' : 'hover:scale-110 hover:rotate-6'
                     }`}
                 >
-                    <Plus className="h-6 w-6" />
+                    <Plus className="h-8 w-8 drop-shadow-lg" />
                 </button>
             </div>
         </>
