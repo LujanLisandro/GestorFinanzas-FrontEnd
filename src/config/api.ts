@@ -5,17 +5,8 @@
 
 // Configuración del entorno
 const API_CONFIG = {
-  // IP del servidor backend Spring Boot
-  HOST: '192.168.0.214',
-  
-  // Puerto del servidor backend (Spring Boot default: 8080, tu caso: 8080)
-  PORT: 8080,
-  
-  // Protocolo (http o https)
-  PROTOCOL: 'http',
-  
-  // Contexto de la aplicación Spring Boot (si tienes server.servlet.context-path configurado)
-  CONTEXT_PATH: '',
+  // URL de Railway (producción)
+  BASE_URL: 'https://gestorfinanzas-api-production.up.railway.app',
   
   // Prefijo de la API (típico en Spring Boot)
   API_PREFIX: 'api',
@@ -24,33 +15,30 @@ const API_CONFIG = {
   API_VERSION: 'v1',
 } as const;
 
-// URL base construida automáticamente
-const BASE_URL = `${API_CONFIG.PROTOCOL}://${API_CONFIG.HOST}:${API_CONFIG.PORT}${API_CONFIG.CONTEXT_PATH}`;
-
 // URL base de la API con prefijo y versión (típico Spring Boot: /api/v1)
-const API_BASE_URL = `${BASE_URL}/${API_CONFIG.API_PREFIX}/${API_CONFIG.API_VERSION}`;
+const API_BASE_URL = `${API_CONFIG.BASE_URL}/${API_CONFIG.API_PREFIX}/${API_CONFIG.API_VERSION}`;
 
 // Endpoints específicos de la API
 export const API_ENDPOINTS = {
   // Base URLs
-  BASE_URL,
+  BASE_URL: API_CONFIG.BASE_URL,
   API_BASE_URL,
   
   // Autenticación (Spring Security endpoints específicos)
   AUTH: {
-    LOGIN: `${BASE_URL}/auth/login`, // Endpoint directo sin /api/v1
-    LOGOUT: `${BASE_URL}/auth/logout`, // Endpoint directo para invalidar token
+    LOGIN: `${API_CONFIG.BASE_URL}/auth/login`, // Endpoint directo sin /api/v1
+    LOGOUT: `${API_CONFIG.BASE_URL}/auth/logout`, // Endpoint directo para invalidar token
     REFRESH: `${API_BASE_URL}/auth/refresh`,
     PROFILE: `${API_BASE_URL}/auth/profile`,
-    REGISTER: `${BASE_URL}/api/users`, // Endpoint específico para registro de usuarios
+    REGISTER: `${API_CONFIG.BASE_URL}/api/users`, // Endpoint específico para registro de usuarios
   },
   
   // Finanzas (controladores REST típicos de Spring Boot)
   FINANCE: {
     BALANCE: `${API_BASE_URL}/finanzas/balance`,
-    BALANCE_ME: `${BASE_URL}/api/balance/me`, // Endpoint específico para balance del usuario
+    BALANCE_ME: `${API_CONFIG.BASE_URL}/api/balance/me`, // Endpoint específico para balance del usuario
     TRANSACTIONS: `${API_BASE_URL}/finanzas/transacciones`,
-    CATEGORIES: `${BASE_URL}/api/category`, // Endpoint para categorías del usuario
+    CATEGORIES: `${API_CONFIG.BASE_URL}/api/category`, // Endpoint para categorías del usuario
     REPORTS: `${API_BASE_URL}/finanzas/reportes`,
     ACCOUNTS: `${API_BASE_URL}/finanzas/cuentas`,
   },
@@ -86,7 +74,7 @@ export const buildApiUrl = (endpoint: string): string => {
 export const checkServerHealth = async (): Promise<boolean> => {
   try {
     // Intentar con Actuator health endpoint primero
-    const actuatorResponse = await fetch(`${BASE_URL}/actuator/health`, {
+    const actuatorResponse = await fetch(`${API_CONFIG.BASE_URL}/actuator/health`, {
       method: 'GET',
       ...DEFAULT_CONFIG,
     });
@@ -96,7 +84,7 @@ export const checkServerHealth = async (): Promise<boolean> => {
     }
     
     // Si Actuator no está disponible, intentar con un endpoint básico
-    const basicResponse = await fetch(`${BASE_URL}/`, {
+    const basicResponse = await fetch(`${API_CONFIG.BASE_URL}/`, {
       method: 'GET',
       ...DEFAULT_CONFIG,
     });

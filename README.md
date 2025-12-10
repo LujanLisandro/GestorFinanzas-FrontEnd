@@ -61,8 +61,9 @@ Dashboard financiero moderno para gestión de finanzas personales desarrollado c
 ## 📊 Backend API
 
 El frontend está preparado para conectarse con un backend de Spring Boot. La configuración de la API se encuentra en:
-- Archivo: `src/contexts/FinancialContext.tsx`
-- URL por defecto: `http://localhost:8080/api`
+- Archivo: `src/config/api.ts`
+- URL de producción: `https://gestorfinanzas-api-production.up.railway.app/api/v1`
+- URL de desarrollo: `http://localhost:8080/api/v1`
 
 ### Endpoints esperados (Spring Boot):
 
@@ -122,11 +123,21 @@ src/
 
 ### Variables de Entorno
 
-Crea un archivo `.env` en la raíz del proyecto:
+El proyecto usa diferentes archivos de entorno según el contexto:
 
-```env
-VITE_API_URL=http://localhost:8080/api
+- **`.env.development`** - Para desarrollo local (ya configurado)
+- **`.env.production`** - Para producción (Railway)
+- **`.env.local`** - Para sobrescribir configuraciones personales
+
+```bash
+# Desarrollo (ya configurado)
+npm run dev  # Usa .env.development
+
+# Producción
+npm run build  # Usa .env.production
 ```
+
+📖 **[Ver guía completa de entornos](ENVIRONMENT.md)** para más detalles sobre gestión de configuraciones
 
 ---
 
