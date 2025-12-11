@@ -72,7 +72,7 @@ class AuthService {
       };
 
       // Usar la URL completa del endpoint de registro
-      const response = await fetch(`${ENV_CONFIG.API_PROTOCOL}://${ENV_CONFIG.API_HOST}:${ENV_CONFIG.API_PORT}/api/users`, {
+      const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
