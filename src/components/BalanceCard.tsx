@@ -81,7 +81,7 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
         <div className={`p-6 rounded-2xl shadow-xl border-2 ${getColorClasses()} hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02]`}>
             <div className="flex items-center justify-between">
                 <div className="flex-1">
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-3 min-h-[32px]">
                         <p className="text-sm font-bold text-gray-700 uppercase tracking-wider">{title}</p>
                         {showCurrencySwitch && type === 'total' && (
                             <div className="flex items-center space-x-1 bg-white/90 backdrop-blur-sm rounded-full p-1 shadow-md border border-violet-200/50">

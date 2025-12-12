@@ -9,6 +9,7 @@ import AddButtonMenu from '../components/AddButtonMenu';
 import DolarConfigModal from '../components/DolarConfigModal';
 import TransactionsSection from '../components/sections/TransactionsSection';
 import CategoriesSection from '../components/sections/CategoriesSection';
+import CalendarSection from '../components/sections/CalendarSection';
 import movementService from '../services/movementService';
 import dolarService from '../services/dolarService';
 import type { Balance, Transaction } from '../types';
@@ -158,11 +159,7 @@ const Dashboard = () => {
             case 'categories':
                 return <CategoriesSection />;
             case 'calendar':
-                return (
-                    <div className="text-center py-20">
-                        <p className="text-gray-500 text-lg">Calendario Financiero - Próximamente</p>
-                    </div>
-                );
+                return <CalendarSection transactions={balance.transactions} />;
             case 'settings':
                 return (
                     <div className="space-y-6">
@@ -241,7 +238,6 @@ const Dashboard = () => {
                                 title="Balance Total"
                                 amount={(userBalance?.ars || 0) + (userBalance?.dolares || 0)}
                                 type="total"
-                                change={8.5}
                                 showCurrencySwitch={true}
                                 arsAmount={userBalance?.ars || 0}
                                 usdAmount={userBalance?.dolares || 0}
@@ -251,13 +247,11 @@ const Dashboard = () => {
                                 title="Ingresos"
                                 amount={balance.income}
                                 type="income"
-                                change={12.3}
                             />
                             <BalanceCard
                                 title="Gastos"
                                 amount={balance.expenses}
                                 type="expense"
-                                change={-5.2}
                             />
                             <CurrencyBalanceCard
                                 currency="ARS"
