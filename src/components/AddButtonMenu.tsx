@@ -75,13 +75,17 @@ const AddButtonMenu = ({ className = '', onMovementCreated }: AddButtonMenuProps
 
         setIsSubmitting(true);
         try {
+            // Formatear fecha al formato esperado por el backend: YYYY-MM-DDTHH:mm:ss
+            const selectedDate = new Date(formData.fecha);
+            const formattedDate = selectedDate.toISOString().split('.')[0]; // Remover milisegundos y timezone
+            
             const movementData: CreateMovementData = {
                 description: formData.description,
                 amount: parseFloat(formData.amount),
                 movementType: movementType,
                 currency: formData.currency,
                 categoryID: parseInt(formData.categoryID),
-                date: new Date(formData.fecha).toISOString(),
+                date: formattedDate,
                 reference: formData.reference || undefined,
             };
 

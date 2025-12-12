@@ -3,10 +3,19 @@
  * Configuración centralizada para las URLs de la API
  */
 
+import { ENV_CONFIG } from './environment';
+
+// Extraer la base URL sin el sufijo /api/v1
+const getBaseUrl = (): string => {
+  const apiUrl = ENV_CONFIG.API_URL;
+  // Si la URL termina con /api/v1, removerlo para obtener la base
+  return apiUrl.replace(/\/api\/v1$/, '');
+};
+
 // Configuración del entorno
 const API_CONFIG = {
-  // URL de Railway (producción)
-  BASE_URL: 'https://gestorfinanzas-api-production.up.railway.app',
+  // URL base (sin /api/v1)
+  BASE_URL: getBaseUrl(),
   
   // Prefijo de la API (típico en Spring Boot)
   API_PREFIX: 'api',
