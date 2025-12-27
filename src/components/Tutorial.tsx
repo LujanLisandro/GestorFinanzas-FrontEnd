@@ -42,7 +42,8 @@ const Tutorial = ({ isOpen, onClose, onOpenNavMenu, onCloseNavMenu, isFirstTime 
             title: '🗂️ Menú de Navegación',
             description: 'Este botón abre el menú lateral. Desde aquí accedes a: Transacciones, Categorías, Calendario y Configuración.',
             targetSelector: 'button[title="Abrir navegación lateral"]',
-            highlightColor: 'from-primary-500 to-accent-500'
+            highlightColor: 'from-primary-500 to-accent-500',
+            action: onCloseNavMenu
         },
         {
             id: 3,

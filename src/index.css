@@ -25,6 +25,11 @@ body {
   border-radius: 1rem !important;
 }
 
+/* Solo elevar el header cuando contiene el elemento spotlight */
+body.tutorial-active header:has(.tutorial-spotlight) {
+  z-index: 99998 !important;
+}
+
 /* Overlay oscuro separado aplicado al body cuando el tutorial está activo */
 body.tutorial-active::before {
   content: '';

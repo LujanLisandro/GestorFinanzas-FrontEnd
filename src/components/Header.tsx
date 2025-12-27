@@ -23,7 +23,7 @@ const Header = ({ onMenuToggle, onTutorialOpen }: HeaderProps) => {
     return (
         <header className="bg-gradient-to-r from-primary-600 via-primary-700 to-accent-700 shadow-xl sticky top-0 z-50">
             <div className="w-full px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-18">
+                <div className="flex justify-between items-center h-19 py-2">
                     <div className="flex items-center">
                         <button
                             onClick={onMenuToggle}
@@ -34,8 +34,8 @@ const Header = ({ onMenuToggle, onTutorialOpen }: HeaderProps) => {
                         </button>
                         
                         <div className="flex-shrink-0 flex items-center space-x-3">
-                            <div className="bg-gradient-to-br from-white/20 to-white/10 p-2.5 rounded-xl backdrop-blur-md shadow-lg border border-white/20">
-                                <DollarSign className="h-9 w-9 text-white drop-shadow-lg" />
+                            <div className="bg-gradient-to-br from-white/20 to-white/10 p-2 rounded-xl backdrop-blur-md shadow-lg border border-white/20">
+                                <DollarSign className="h-7 w-7 text-white drop-shadow-lg" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-extrabold text-white drop-shadow-md tracking-tight">
@@ -47,9 +47,9 @@ const Header = ({ onMenuToggle, onTutorialOpen }: HeaderProps) => {
                     </div>
 
                     <div className="flex items-center space-x-3">
-                        <div className="hidden md:flex items-center space-x-3 bg-gradient-to-br from-white/20 to-white/10 rounded-xl px-4 py-2.5 backdrop-blur-md border border-white/20 shadow-lg">
-                            <div className="bg-white/20 p-1.5 rounded-lg">
-                                <User className="h-5 w-5 text-white" />
+                        <div className="hidden md:flex items-center space-x-2 bg-gradient-to-br from-white/20 to-white/10 rounded-xl px-3 py-2 backdrop-blur-md border border-white/20 shadow-lg">
+                            <div className="bg-white/20 p-1 rounded-lg">
+                                <User className="h-4 w-4 text-white" />
                             </div>
                             <span className="text-sm font-semibold text-white drop-shadow-sm">
                                 {user?.username}
