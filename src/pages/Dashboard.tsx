@@ -7,11 +7,13 @@ import FinancialCharts from '../components/FinancialCharts';
 import NavigationMenu from '../components/NavigationMenu';
 import AddButtonMenu from '../components/AddButtonMenu';
 import DolarConfigModal from '../components/DolarConfigModal';
+import Tutorial from '../components/Tutorial';
 import TransactionsSection from '../components/sections/TransactionsSection';
 import CategoriesSection from '../components/sections/CategoriesSection';
 import CalendarSection from '../components/sections/CalendarSection';
 import movementService from '../services/movementService';
 import dolarService from '../services/dolarService';
+import tutorialService from '../services/tutorialService';
 import type { Balance, Transaction } from '../types';
 
 const Dashboard = () => {
@@ -30,6 +32,35 @@ const Dashboard = () => {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [exchangeRate, setExchangeRate] = useState<number>(1000);
     const [isDolarConfigOpen, setIsDolarConfigOpen] = useState(false);
+    const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+    const [isFirstTimeTutorial, setIsFirstTimeTutorial] = useState(false);
+
+    // Verificar estado del tutorial al cargar
+    useEffect(() => {
+        const checkTutorialStatus = async () => {
+            console.log('🔍 Verificando estado del tutorial...');
+            const response = await tutorialService.getTutorialStatus();
+            
+            console.log('📊 Respuesta del servicio:', response);
+            
+            if (response.success && response.data) {
+                console.log('✅ Tutorial completado:', response.data.completed);
+                
+                // Si no está completado, abrir automáticamente
+                if (!response.data.completed) {
+                    console.log('🎯 Abriendo tutorial por primera vez...');
+                    setIsFirstTimeTutorial(true);
+                    setIsTutorialOpen(true);
+                } else {
+                    console.log('✨ Tutorial ya fue completado anteriormente');
+                }
+            } else {
+                console.error('❌ Error al verificar tutorial:', response.error);
+            }
+        };
+
+        checkTutorialStatus();
+    }, []);
 
     useEffect(() => {
         // Cargar cotización del dólar al iniciar
@@ -143,7 +174,10 @@ const Dashboard = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-gray-50">
-                <Header onMenuToggle={() => setIsNavigationOpen(!isNavigationOpen)} />
+                <Header 
+                    onMenuToggle={() => setIsNavigationOpen(!isNavigationOpen)}
+                    onTutorialOpen={() => setIsTutorialOpen(true)}
+                />
                 <div className="flex items-center justify-center h-96">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
                 </div>
@@ -320,7 +354,10 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-primary-50 via-accent-50/40 to-secondary-50/40 relative">
-            <Header onMenuToggle={() => setIsNavigationOpen(!isNavigationOpen)} />
+            <Header 
+                onMenuToggle={() => setIsNavigationOpen(!isNavigationOpen)}
+                onTutorialOpen={() => setIsTutorialOpen(true)}
+            />
             
             {/* Menú de Navegación (reemplaza al SideMenu original) */}
             <NavigationMenu
@@ -349,6 +386,18 @@ const Dashboard = () => {
                     }}
                 />
             )}
+
+            {/* Tutorial Interactivo */}
+            <Tutorial
+                isOpen={isTutorialOpen}
+                onClose={() => {
+                    setIsTutorialOpen(false);
+                    setIsFirstTimeTutorial(false); // Reset después de cerrar
+                }}
+                onOpenNavMenu={() => setIsNavigationOpen(true)}
+                onCloseNavMenu={() => setIsNavigationOpen(false)}
+                isFirstTime={isFirstTimeTutorial}
+            />
         </div>
     );
 };

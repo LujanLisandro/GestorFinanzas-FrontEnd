@@ -175,7 +175,7 @@ const FinancialCharts = ({ transactions }: FinancialChartsProps) => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 financial-charts">
             {/* Título y Filtros de Fecha */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
                 <div className="flex items-center gap-2 mb-4">

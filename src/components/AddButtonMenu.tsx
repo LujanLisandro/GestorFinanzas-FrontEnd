@@ -281,7 +281,7 @@ const AddButtonMenu = ({ className = '', onMovementCreated }: AddButtonMenuProps
                 />
             )}
 
-            <div className={`fixed bottom-6 right-6 z-50 ${className}`}>
+            <div className={`fixed bottom-6 right-6 z-[9998] add-button-menu ${className}`}>
                 {/* Panel desplegable */}
                 <div
                     className={`absolute bottom-20 right-0 w-96 bg-white rounded-2xl shadow-2xl border-2 border-gray-200 transform transition-all duration-300 ease-in-out ${

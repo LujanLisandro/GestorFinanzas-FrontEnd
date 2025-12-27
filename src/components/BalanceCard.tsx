@@ -78,7 +78,7 @@ const BalanceCard = ({ title, amount, type, change, showCurrencySwitch = false, 
     };
 
     return (
-        <div className={`p-6 rounded-2xl shadow-xl border-2 ${getColorClasses()} hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02]`}>
+        <div className={`p-6 rounded-2xl shadow-xl border-2 ${getColorClasses()} hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-[1.02] ${type === 'total' ? 'balance-card-total' : ''}`}>
             <div className="flex items-center justify-between">
                 <div className="flex-1">
                     <div className="flex items-center justify-between mb-3 min-h-[32px]">

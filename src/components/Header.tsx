@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { LogOut, User, DollarSign, PanelLeft } from 'lucide-react';
+import { LogOut, User, DollarSign, PanelLeft, HelpCircle } from 'lucide-react';
 
 interface HeaderProps {
     onMenuToggle: () => void;
+    onTutorialOpen?: () => void;
 }
 
-const Header = ({ onMenuToggle }: HeaderProps) => {
+const Header = ({ onMenuToggle, onTutorialOpen }: HeaderProps) => {
     const { user, logout } = useAuth();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -54,6 +55,18 @@ const Header = ({ onMenuToggle }: HeaderProps) => {
                                 {user?.username}
                             </span>
                         </div>
+
+                        {/* Botón de Tutorial/Ayuda */}
+                        <button
+                            onClick={onTutorialOpen}
+                            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-br from-accent-500 to-cyan-600 hover:from-accent-600 hover:to-cyan-700 text-white rounded-xl transition-all duration-200 shadow-lg border border-accent-400/30 hover:scale-105 active:scale-95 hover:shadow-xl"
+                            title="Ver tutorial"
+                        >
+                            <HelpCircle className="h-4 w-4 drop-shadow-sm" />
+                            <span className="hidden sm:inline text-sm font-bold drop-shadow-sm">
+                                Tutorial
+                            </span>
+                        </button>
 
                         <button
                             onClick={handleLogout}

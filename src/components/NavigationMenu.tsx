@@ -84,7 +84,7 @@ const NavigationMenu = ({ isOpen, onClose, activeSection, onSectionChange }: Nav
 
             {/* Navigation Menu */}
             <div
-                className={`fixed left-0 top-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
+                className={`fixed left-0 top-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-[9998] ${
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}
             >
@@ -107,6 +107,7 @@ const NavigationMenu = ({ isOpen, onClose, activeSection, onSectionChange }: Nav
                     {sections.map((section) => (
                         <button
                             key={section.id}
+                            data-section={section.id}
                             onClick={() => handleSectionClick(section.id)}
                             className={`w-full flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 text-left ${
                                 activeSection === section.id
