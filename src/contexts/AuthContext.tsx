@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { User, AuthContextType, RegisterCredentials, UserBalance } from '../types';
 import authService from '../services/authService';
 import balanceService from '../services/balanceService';
+import httpService, { ApiError } from '../services/httpService';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -24,7 +25,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true); // Inicia en true para validar sesión
     const [backendUnavailable, setBackendUnavailable] = useState(false);
 
-    const loadBalance = async () => {
+    // Función helper para detectar si un error indica backend no disponible
+    const isBackendUnavailableError = (error: any): boolean => {
+        if (error instanceof ApiError) {
+            return error.errorType === 'network' || 
+                   error.errorType === 'timeout' || 
+                   error.errorType === 'server';
+        }
+        // Errores de fetch nativos
+        if (error?.name === 'TypeError' || error?.name === 'AbortError') {
+            return true;
+        }
+        return false;
+    };
+
+    const loadBalance = async (): Promise<boolean> => {
         try {
             const response = await balanceService.getMyBalance();
             
@@ -36,19 +51,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 // Si falla la carga del balance, solo mostrar el error sin cerrar sesión
                 console.warn('No se pudo cargar el balance:', response.error);
                 setBalance(null);
-                setBackendUnavailable(false); // No marcamos el backend como no disponible
+                // Verificar si el error indica backend no disponible
+                setBackendUnavailable(false);
                 return false;
             }
         } catch (error) {
             console.error('Error loading balance:', error);
             setBalance(null);
-            setBackendUnavailable(false);
+            
+            // Detectar correctamente si el backend no está disponible
+            if (isBackendUnavailableError(error)) {
+                setBackendUnavailable(true);
+                console.warn('Backend no disponible - activando estado de error');
+            } else {
+                setBackendUnavailable(false);
+            }
+            
             return false;
         }
     };
 
     const login = async (username: string, password: string): Promise<boolean> => {
         setIsLoading(true);
+        setBackendUnavailable(false);
 
         try {
             const response = await authService.login({ username, password });
@@ -72,6 +97,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             return false;
         } catch (error) {
             console.error('Login failed:', error);
+            
+            // Detectar si el backend no está disponible
+            if (isBackendUnavailableError(error)) {
+                setBackendUnavailable(true);
+            }
+            
             setIsLoading(false);
             return false;
         }
@@ -97,6 +128,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsLoading(true);
         setBackendUnavailable(false);
         
+        // Resetear el estado del httpService también
+        httpService.resetConnectionState();
+        
         const userData = authService.getUserData();
         if (userData && authService.isAuthenticated()) {
             const balanceLoaded = await loadBalance();
@@ -108,10 +142,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                     email: userData.email || ''
                 };
                 setUser(user);
+                setBackendUnavailable(false);
             } else {
-                authService.clearAuth();
-                setUser(null);
-                setBalance(null);
+                // Si el balance no se pudo cargar y el backend sigue no disponible,
+                // no cerrar la sesión pero mantener el estado de error
+                const connectionState = httpService.getConnectionState();
+                if (!connectionState.isConnected) {
+                    setBackendUnavailable(true);
+                } else {
+                    // El servidor respondió pero hubo otro tipo de error
+                    authService.clearAuth();
+                    setUser(null);
+                    setBalance(null);
+                }
             }
         }
         
